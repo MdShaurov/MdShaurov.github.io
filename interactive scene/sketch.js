@@ -153,9 +153,9 @@ function extras() {
 
     textSize(height / 15);
     if (scoreL > scoreR) {
-      text("Left has won!", width / 2, (height / 8) * 3);
+      text("Left  has  won!", width / 2, (height / 8) * 3);
     } else if (scoreL < scoreR) {
-      text("Right has won!", width / 2, (height / 8) * 3);
+      text("Right  has  won!", width / 2, (height / 8) * 3);
     } else {
       text("Draw!", width / 2, (height / 8) * 3);
     }
