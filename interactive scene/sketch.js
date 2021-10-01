@@ -13,9 +13,9 @@ let rectY;
 let rectY2;
 let rectHeight;
 let radius;
-let speedX = 3;
-let speedY = 3;
-let speedPlus = 0.1;
+let speedX = 2;
+let speedY = 2;
+let speedPlus = 0.2;
 let paddleSfx;
 let wallSfx;
 let scoreSfx;
@@ -68,7 +68,6 @@ function setup() {
 function draw() {
   background(0);
 
-  extras();
   if (!endScreen) {
     displayRect();
   }
@@ -84,10 +83,13 @@ function draw() {
     displayBall();
     centerLine();
   }
+  extras();
 }
 
 // Text and timer
 function extras() {
+  noStroke();
+  fill(255);
   textSize(height / 30);
   textAlign(LEFT);
   text("FPS   " + Math.round(frameRate()), width / 100, height - height / 100);
@@ -109,14 +111,32 @@ function extras() {
 
     textSize(height / 15);
     textAlign(CENTER);
-    text(timer, width / 2, height / 10);
+    text(timer, width / 2, height / 16);
     if (frameCount % 60 === 0 && timer > 0) {
       timer--;
-    } else if (timer <= 50) {
+    } else if (timer <= 30) {
       endScreen = true;
+    }
+    if (timer <= 50) {
+      speedX += speedPlus;
+      speedY += speedPlus;
+    }
+    else if (timer <= 40) {
+      speedX += speedPlus;
+      speedY += speedPlus;
+    }
+    else if (timer <= 30) {
+      speedX += speedPlus;
+      speedY += speedPlus;
+    }
+    else if (timer <= 20) {
+      speedX += speedPlus;
+      speedY += speedPlus;
     }
   }
   if (endScreen) {
+    noStroke();
+    fill(255);
     textSize(height / 24);
     textAlign(CENTER);
     text("Left   " + scoreL, width / 3, height / 2);
@@ -279,33 +299,37 @@ function displayBall() {
 function control() {
   if (keyIsDown(87)) {
     if (rectY >= height / 7 / 2) {
-      rectY -= 7;
+      rectY -= 5;
     }
   }
   if (keyIsDown(83)) {
     if (rectY <= height - height / 7 / 2) {
-      rectY += 7;
+      rectY += 5;
     }
   }
   if (keyIsDown(UP_ARROW)) {
     if (rectY2 >= height / 7 / 2) {
-      rectY2 -= 7;
+      rectY2 -= 5;
     }
   }
   if (keyIsDown(DOWN_ARROW)) {
     if (rectY2 <= height - height / 7 / 2) {
-      rectY2 += 7;
+      rectY2 += 5;
     }
   }
 }
 
 // Center dotted line
 function centerLine() {
-  noStroke();
   rectMode(CENTER);
+  noStroke();
+  fill(255);
   for (let x = 0; x < 30; x++) {
     rect(width / 2, (height / 100) * x * 5, width / 210, height / 35);
   }
+  stroke(255);
+  fill(0);
+  rect(width/2, height/50, width/14, height/8);
 }
 
 // Collision detection with the rectangles
