@@ -13,9 +13,9 @@ let rectY;
 let rectY2;
 let rectHeight;
 let radius;
-let speedX = 3;
-let speedY = 3;
-let speedPlus = 0.2;
+let speedX = 4.5;
+let speedY = 4.5;
+let speedPlus = 1.25;
 let paddleSfx;
 let wallSfx;
 let scoreSfx;
@@ -23,8 +23,10 @@ let start = true;
 let pong;
 let play;
 let quit;
+let restart;
 let playHover;
 let quitHover;
+let restartHover;
 let startScreenSfx;
 let startMusic = true;
 let font;
@@ -46,8 +48,10 @@ function preload() {
   // Clickable buttons
   play = loadImage("assets/menu/play.png");
   quit = loadImage("assets/menu/quit.png");
+  restart = loadImage("assets/menu/restart.png");
   playHover = loadImage("assets/menu/playHover.png");
   quitHover = loadImage("assets/menu/quitHover.png");
+  restartHover = loadImage("assets/menu/restartHover.png");
 
   // Game sound effects
   paddleSfx = loadSound("assets/sounds/paddle.mp3");
@@ -84,6 +88,8 @@ function draw() {
     centerLine();
   }
   extras();
+  console.log(speedX);
+  console.log(speedY);
 }
 
 // Text and timer
@@ -114,24 +120,21 @@ function extras() {
     text(timer, width / 2, height / 16);
     if (frameCount % 60 === 0 && timer > 0) {
       timer--;
-    } else if (timer <= 30) {
+    } else if (timer <= 50) {
       endScreen = true;
     }
-    if (timer === 50) {
-      speedX += speedPlus;
-      speedY += speedPlus;
-    }
-    else if (timer === 40) {
-      speedX += speedPlus;
-      speedY += speedPlus;
-    }
-    else if (timer === 30) {
-      speedX += speedPlus;
-      speedY += speedPlus;
-    }
-    else if (timer === 20) {
-      speedX += speedPlus;
-      speedY += speedPlus;
+    if (frameCount % 60 === 0 && timer === 50) {
+      speedX *= speedPlus;
+      speedY *= speedPlus;
+    } else if (frameCount % 60 === 0 && timer === 40) {
+      speedX *= speedPlus;
+      speedY *= speedPlus;
+    } else if (frameCount % 60 === 0 && timer === 30) {
+      speedX *= speedPlus;
+      speedY *= speedPlus;
+    } else if (frameCount % 60 === 0 && timer === 20) {
+      speedX *= speedPlus;
+      speedY *= speedPlus;
     }
   }
   if (endScreen) {
@@ -142,7 +145,7 @@ function extras() {
     text("Left   " + scoreL, width / 3, height / 2);
     text("Right   " + scoreR, width - width / 3, height / 2);
 
-    image(play, width / 2, (height / 8) * 5, width / 6, height / 10);
+    image(restart, width / 2, (height / 8) * 5, width / 6, height / 10);
     if (
       mouseX >= width / 2 - width / 6 / 2 &&
       mouseX <= width / 2 + width / 6 / 2 &&
@@ -150,7 +153,7 @@ function extras() {
       mouseY <= (height / 8) * 5 + height / 10 / 2
     ) {
       image(
-        playHover,
+        restartHover,
         width / 2,
         (height / 8) * 5,
         (width / 6) * 1.1,
@@ -166,9 +169,10 @@ function extras() {
     ) {
       gameSfx.stop();
       start = true;
-      startScreenSfx = true;
+      startMusic = true;
       gameMusic = false;
       endScreen = false;
+      timer = 60;
     }
 
     textSize(height / 15);
@@ -299,27 +303,27 @@ function displayBall() {
 function control() {
   if (keyIsDown(87)) {
     if (rectY >= height / 7 / 2) {
-      rectY -= 5;
+      rectY -= 7;
     }
   }
   if (keyIsDown(83)) {
     if (rectY <= height - height / 7 / 2) {
-      rectY += 5;
+      rectY += 7;
     }
   }
   if (keyIsDown(UP_ARROW)) {
     if (rectY2 >= height / 7 / 2) {
-      rectY2 -= 5;
+      rectY2 -= 7;
     }
   }
   if (keyIsDown(DOWN_ARROW)) {
     if (rectY2 <= height - height / 7 / 2) {
-      rectY2 += 5;
+      rectY2 += 7;
     }
   }
 }
 
-// Center dotted line
+// Center dashed line
 function centerLine() {
   rectMode(CENTER);
   noStroke();
@@ -329,24 +333,46 @@ function centerLine() {
   }
   stroke(255);
   fill(0);
-  rect(width/2, height/50, width/14, height/8);
+  rect(width / 2, height / 50, width / 10, height / 8);
 }
 
 // Collision detection with the rectangles
 function collision() {
   if (
     x < width / 20 + width / 60 / 2 + radius &&
+    x > width / 20 - width / 60 / 2 - radius &&
     y > rectY - height / 7 / 2 - radius &&
     y < rectY + height / 7 / 2 + radius
   ) {
     paddleSfx.play();
     speedX = -speedX;
   } else if (
+    x < width - width / 20 + width / 60 / 2 + radius &&
     x > width - width / 20 - width / 60 / 2 - radius &&
     y > rectY2 - height / 7 / 2 - radius &&
     y < rectY2 + height / 7 / 2 + radius
   ) {
     paddleSfx.play();
     speedX = -speedX;
+  } else if (
+    (x < width / 20 + width / 60 / 2 + radius &&
+      x > width / 20 - width / 60 / 2 - radius &&
+      y > rectY - height / 7 / 2 - radius) ||
+    (x < width / 20 + width / 60 / 2 + radius &&
+      x > width / 20 - width / 60 / 2 - radius &&
+      y < rectY + height / 7 / 2 + radius)
+  ) {
+    paddleSfx.play();
+    speedY = -speedY;
+  } else if (
+    (x < width - width / 20 + width / 60 / 2 + radius &&
+      x > width - width / 20 - width / 60 / 2 - radius &&
+      y > rectY2 - height / 7 / 2 - radius) ||
+    (x < width - width / 20 + width / 60 / 2 + radius &&
+      x > width - width / 20 - width / 60 / 2 - radius &&
+      y < rectY2 + height / 7 / 2 + radius)
+  ) {
+    paddleSfx.play();
+    speedY = -speedY;
   }
 }
