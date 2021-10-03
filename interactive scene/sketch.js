@@ -3,7 +3,7 @@
 // September 27, 2021
 //
 // Purpose: To create a scene with keyboard and mouse interactions.
-// Extra for Experts: Add sound interations.
+// Extra for Experts: Add sound interactions.
 
 // Global Variables
 let x;
@@ -13,8 +13,8 @@ let rectY;
 let rectY2;
 let rectHeight;
 let radius;
-let speedX = 2;
-let speedY = 2;
+let speedX = 3;
+let speedY = 3;
 let speedPlus = 0.2;
 let paddleSfx;
 let wallSfx;
@@ -117,19 +117,19 @@ function extras() {
     } else if (timer <= 30) {
       endScreen = true;
     }
-    if (timer <= 50) {
+    if (timer === 50) {
       speedX += speedPlus;
       speedY += speedPlus;
     }
-    else if (timer <= 40) {
+    else if (timer === 40) {
       speedX += speedPlus;
       speedY += speedPlus;
     }
-    else if (timer <= 30) {
+    else if (timer === 30) {
       speedX += speedPlus;
       speedY += speedPlus;
     }
-    else if (timer <= 20) {
+    else if (timer === 20) {
       speedX += speedPlus;
       speedY += speedPlus;
     }
