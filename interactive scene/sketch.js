@@ -13,8 +13,8 @@ let rectY;
 let rectY2;
 let rectHeight;
 let radius;
-let speedX = 4.5;
-let speedY = 4.5;
+let speedX = 2.5;
+let speedY = 2.5;
 let speedPlus = 1.2;
 let paddleSfx;
 let wallSfx;
@@ -148,6 +148,7 @@ function textOnScreen() {
 
   // Match end screen
   if (!start && endScreen) {
+    let timeDelay
     noStroke();
     fill(255);
     textSize(height / 24);
@@ -216,6 +217,8 @@ function startScreen() {
       startScreenSfx.loop();
       startMusic = false;
     }
+
+    // Mouse hovering over button
     if (
       mouseX >= width / 2 - width / 6 / 2 &&
       mouseX <= width / 2 + width / 6 / 2 &&
