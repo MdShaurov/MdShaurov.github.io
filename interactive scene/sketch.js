@@ -40,7 +40,7 @@ let endScreen = false;
 // Preload resources
 function preload() {
   // Font used
-  font = loadFont("asset/fonts/font.TTF");
+  font = loadFont("assets/fonts/font.TTF");
 
   // Title
   pong = loadImage("assets/menu/pong.png");
