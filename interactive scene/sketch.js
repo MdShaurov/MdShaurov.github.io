@@ -3,11 +3,7 @@
 // October 04, 2021
 //
 // Purpose: To create a scene with keyboard and mouse interactions.
-<<<<<<< HEAD
 // Extra for Experts: Add sound interactions and resizable window.
-=======
-// Extra for Experts: Add sound interactions.
->>>>>>> ab6fc7a8779f566ed8962424989554f1fe8078f8
 
 // Global Variables
 let ballX;
@@ -19,11 +15,7 @@ let rectHeight;
 let radius;
 let speedX = 4.5;
 let speedY = 4.5;
-<<<<<<< HEAD
 let speedPlus = 1.2;
-=======
-let speedPlus = 1.25;
->>>>>>> ab6fc7a8779f566ed8962424989554f1fe8078f8
 let paddleSfx;
 let wallSfx;
 let scoreSfx;
@@ -99,12 +91,6 @@ function main() {
     displayBall();
     centerLine();
   }
-<<<<<<< HEAD
-=======
-  extras();
-  console.log(speedX);
-  console.log(speedY);
->>>>>>> ab6fc7a8779f566ed8962424989554f1fe8078f8
 }
 
 // Text and timer
@@ -140,17 +126,11 @@ function textOnScreen() {
     // timer on screen
     if (frameCount % 60 === 0 && timer > 0) {
       timer--;
-<<<<<<< HEAD
     } else if (timer <= 0) {
       endScreen = true;
     }
 
     // Gradual speed increase
-=======
-    } else if (timer <= 50) {
-      endScreen = true;
-    }
->>>>>>> ab6fc7a8779f566ed8962424989554f1fe8078f8
     if (frameCount % 60 === 0 && timer === 50) {
       speedX *= speedPlus;
       speedY *= speedPlus;
@@ -221,7 +201,7 @@ function textOnScreen() {
 
 // Start screen UI
 function startScreen() {
-  if (start && !endScreen) {
+  if (start) {
     rectY = height / 2;
     rectY2 = height / 2;
     rectHeight = height / 4.8;
@@ -384,54 +364,20 @@ function centerLine() {
 // Collision detection
 function collision() {
   if (
-<<<<<<< HEAD
     ballX < width / 20 + width / 60 / 2 + radius &&
     ballX > width / 20 - width / 60 / 2 - radius &&
     ballY > rectY - height / 7 / 2 - radius &&
     ballY < rectY + height / 7 / 2 + radius
-=======
-    x < width / 20 + width / 60 / 2 + radius &&
-    x > width / 20 - width / 60 / 2 - radius &&
-    y > rectY - height / 7 / 2 - radius &&
-    y < rectY + height / 7 / 2 + radius
->>>>>>> ab6fc7a8779f566ed8962424989554f1fe8078f8
   ) {
     paddleSfx.play();
     speedX = -speedX;
   } else if (
-<<<<<<< HEAD
     ballX < width - width / 20 + width / 60 / 2 + radius &&
     ballX > width - width / 20 - width / 60 / 2 - radius &&
     ballY > rectY2 - height / 7 / 2 - radius &&
     ballY < rectY2 + height / 7 / 2 + radius
-=======
-    x < width - width / 20 + width / 60 / 2 + radius &&
-    x > width - width / 20 - width / 60 / 2 - radius &&
-    y > rectY2 - height / 7 / 2 - radius &&
-    y < rectY2 + height / 7 / 2 + radius
->>>>>>> ab6fc7a8779f566ed8962424989554f1fe8078f8
   ) {
     paddleSfx.play();
     speedX = -speedX;
-  } else if (
-    (x < width / 20 + width / 60 / 2 + radius &&
-      x > width / 20 - width / 60 / 2 - radius &&
-      y > rectY - height / 7 / 2 - radius) ||
-    (x < width / 20 + width / 60 / 2 + radius &&
-      x > width / 20 - width / 60 / 2 - radius &&
-      y < rectY + height / 7 / 2 + radius)
-  ) {
-    paddleSfx.play();
-    speedY = -speedY;
-  } else if (
-    (x < width - width / 20 + width / 60 / 2 + radius &&
-      x > width - width / 20 - width / 60 / 2 - radius &&
-      y > rectY2 - height / 7 / 2 - radius) ||
-    (x < width - width / 20 + width / 60 / 2 + radius &&
-      x > width - width / 20 - width / 60 / 2 - radius &&
-      y < rectY2 + height / 7 / 2 + radius)
-  ) {
-    paddleSfx.play();
-    speedY = -speedY;
   }
 }
