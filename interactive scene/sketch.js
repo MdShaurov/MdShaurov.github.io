@@ -1,21 +1,21 @@
 // Interactive Scene
 // Md Shaurov
-// September 27, 2021
+// October 04, 2021
 //
 // Purpose: To create a scene with keyboard and mouse interactions.
-// Extra for Experts: Add sound interations.
+// Extra for Experts: Add sound interactions and resizable window.
 
 // Global Variables
-let x;
-let y;
+let ballX;
+let ballY;
 let move = true;
 let rectY;
 let rectY2;
 let rectHeight;
 let radius;
-let speedX = 2;
-let speedY = 2;
-let speedPlus = 0.2;
+let speedX = 4.5;
+let speedY = 4.5;
+let speedPlus = 1.2;
 let paddleSfx;
 let wallSfx;
 let scoreSfx;
@@ -23,22 +23,24 @@ let start = true;
 let pong;
 let play;
 let quit;
+let restart;
 let playHover;
 let quitHover;
+let restartHover;
 let startScreenSfx;
 let startMusic = true;
 let font;
 let gameSfx;
 let gameMusic = false;
-let scoreL = 0;
-let scoreR = 0;
+let scoreL;
+let scoreR;
 let timer = 60;
 let endScreen = false;
 
 // Preload resources
 function preload() {
   // Font used
-  font = loadFont("assets/fonts/font.TTF");
+  font = loadFont("asset/fonts/font.TTF");
 
   // Title
   pong = loadImage("assets/menu/pong.png");
@@ -46,8 +48,10 @@ function preload() {
   // Clickable buttons
   play = loadImage("assets/menu/play.png");
   quit = loadImage("assets/menu/quit.png");
+  restart = loadImage("assets/menu/restart.png");
   playHover = loadImage("assets/menu/playHover.png");
   quitHover = loadImage("assets/menu/quitHover.png");
+  restartHover = loadImage("assets/menu/restartHover.png");
 
   // Game sound effects
   paddleSfx = loadSound("assets/sounds/paddle.mp3");
@@ -64,14 +68,18 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
 }
 
-// Main function running
+// Draw function
 function draw() {
   background(0);
 
-  if (!endScreen) {
-    displayRect();
-  }
+  displayRect();
   startScreen();
+  main();
+  textOnScreen();
+}
+
+// Main function running when game starts
+function main() {
   if (!start && !endScreen) {
     if (gameMusic) {
       gameSfx.loop();
@@ -83,16 +91,18 @@ function draw() {
     displayBall();
     centerLine();
   }
-  extras();
 }
 
 // Text and timer
-function extras() {
+function textOnScreen() {
+  // Framerate counter
   noStroke();
   fill(255);
   textSize(height / 30);
   textAlign(LEFT);
   text("FPS   " + Math.round(frameRate()), width / 100, height - height / 100);
+
+  // Credits & keeping score
   if (start) {
     fill(255);
     textFont(font);
@@ -112,28 +122,31 @@ function extras() {
     textSize(height / 15);
     textAlign(CENTER);
     text(timer, width / 2, height / 16);
+
+    // timer on screen
     if (frameCount % 60 === 0 && timer > 0) {
       timer--;
-    } else if (timer <= 30) {
+    } else if (timer <= 0) {
       endScreen = true;
     }
-    if (timer <= 50) {
-      speedX += speedPlus;
-      speedY += speedPlus;
-    }
-    else if (timer <= 40) {
-      speedX += speedPlus;
-      speedY += speedPlus;
-    }
-    else if (timer <= 30) {
-      speedX += speedPlus;
-      speedY += speedPlus;
-    }
-    else if (timer <= 20) {
-      speedX += speedPlus;
-      speedY += speedPlus;
+
+    // Gradual speed increase
+    if (frameCount % 60 === 0 && timer === 50) {
+      speedX *= speedPlus;
+      speedY *= speedPlus;
+    } else if (frameCount % 60 === 0 && timer === 40) {
+      speedX *= speedPlus;
+      speedY *= speedPlus;
+    } else if (frameCount % 60 === 0 && timer === 30) {
+      speedX *= speedPlus;
+      speedY *= speedPlus;
+    } else if (frameCount % 60 === 0 && timer === 20) {
+      speedX *= speedPlus;
+      speedY *= speedPlus;
     }
   }
+
+  // Match end screen
   if (endScreen) {
     noStroke();
     fill(255);
@@ -142,7 +155,7 @@ function extras() {
     text("Left   " + scoreL, width / 3, height / 2);
     text("Right   " + scoreR, width - width / 3, height / 2);
 
-    image(play, width / 2, (height / 8) * 5, width / 6, height / 10);
+    image(restart, width / 2, (height / 8) * 5, width / 6, height / 10);
     if (
       mouseX >= width / 2 - width / 6 / 2 &&
       mouseX <= width / 2 + width / 6 / 2 &&
@@ -150,13 +163,15 @@ function extras() {
       mouseY <= (height / 8) * 5 + height / 10 / 2
     ) {
       image(
-        playHover,
+        restartHover,
         width / 2,
         (height / 8) * 5,
         (width / 6) * 1.1,
         (height / 10) * 1.1
       );
     }
+
+    // Restart button interaction
     if (
       mouseIsPressed &&
       mouseX >= width / 2 - width / 6 / 2 &&
@@ -166,11 +181,13 @@ function extras() {
     ) {
       gameSfx.stop();
       start = true;
-      startScreenSfx = true;
+      startMusic = true;
       gameMusic = false;
       endScreen = false;
+      timer = 60;
     }
 
+    // Finished match results
     textSize(height / 15);
     if (scoreL > scoreR) {
       text("Left  has  won!", width / 2, (height / 8) * 3);
@@ -184,7 +201,7 @@ function extras() {
 
 // Start screen UI
 function startScreen() {
-  if (start) {
+  if (start && !endScreen) {
     rectY = height / 2;
     rectY2 = height / 2;
     rectHeight = height / 4.8;
@@ -193,6 +210,8 @@ function startScreen() {
     image(pong, width / 2, (height / 8) * 2.5, width / 3, height / 6);
     image(play, width / 2, (height / 8) * 4.5, width / 6, height / 10);
     image(quit, width / 2, (height / 8) * 5.5, width / 6, height / 10);
+
+    //
     if (startMusic) {
       startScreenSfx.loop();
       startMusic = false;
@@ -225,6 +244,8 @@ function startScreen() {
         (height / 10) * 1.1
       );
     }
+
+    // Play button interaction
     if (
       mouseIsPressed &&
       mouseX >= width / 2 - width / 6 / 2 &&
@@ -235,7 +256,12 @@ function startScreen() {
       startScreenSfx.stop();
       start = false;
       gameMusic = true;
+      ballY = radius;
+      scoreL = 0;
+      scoreR = 0;
     }
+
+    // Quit button interaction
     if (
       mouseIsPressed &&
       mouseX >= width / 2 - width / 6 / 2 &&
@@ -253,98 +279,103 @@ function startScreen() {
 function moveBall() {
   if (move) {
     radius = height / 55;
-    x = width / 2;
-    y = radius * 2;
+    ballX = width / 2;
+    ballY = radius * 2;
     move = false;
   }
 
-  if (y < radius) {
-    y = radius;
+  // Ball interaction with edges of screen
+  if (ballY < radius) {
+    ballY = radius;
     wallSfx.play();
     speedY = -speedY;
-  } else if (y > height - radius) {
-    y = height - radius;
+  } else if (ballY > height - radius) {
+    ballY = height - radius;
     wallSfx.play();
     speedY = -speedY;
-  } else if (x < radius) {
+  } else if (ballX < radius) {
     scoreSfx.play();
-    x = width / 2;
-    y = -radius;
+    ballX = width / 2;
+    ballY = -radius;
     scoreR++;
-  } else if (x > width - radius) {
+  } else if (ballX > width - radius) {
     scoreSfx.play();
-    x = width / 2;
-    y = -radius;
+    ballX = width / 2;
+    ballY = -radius;
     scoreL++;
   } else {
-    x += speedX;
-    y += speedY;
+    ballX += speedX;
+    ballY += speedY;
   }
 }
 
 // Shows the rectangles on the side
 function displayRect() {
-  fill(255);
-  rectMode(CENTER);
-  rect(width / 20, rectY, width / 60, height / 7);
-  rect(width - width / 20, rectY2, width / 60, height / 7);
+  if (!endScreen) {
+    fill(255);
+    rectMode(CENTER);
+    rect(width / 20, rectY, width / 60, height / 7);
+    rect(width - width / 20, rectY2, width / 60, height / 7);
+  }
 }
 
 // Shows the ball
 function displayBall() {
-  circle(x, y, radius * 2);
+  circle(ballX, ballY, radius * 2);
 }
 
 // Inputs for the control of the rectangles
 function control() {
   if (keyIsDown(87)) {
     if (rectY >= height / 7 / 2) {
-      rectY -= 5;
+      rectY -= 7;
     }
   }
   if (keyIsDown(83)) {
     if (rectY <= height - height / 7 / 2) {
-      rectY += 5;
+      rectY += 7;
     }
   }
   if (keyIsDown(UP_ARROW)) {
     if (rectY2 >= height / 7 / 2) {
-      rectY2 -= 5;
+      rectY2 -= 7;
     }
   }
   if (keyIsDown(DOWN_ARROW)) {
     if (rectY2 <= height - height / 7 / 2) {
-      rectY2 += 5;
+      rectY2 += 7;
     }
   }
 }
 
-// Center dotted line
+// Center dashed line
 function centerLine() {
   rectMode(CENTER);
   noStroke();
   fill(255);
-  for (let x = 0; x < 30; x++) {
-    rect(width / 2, (height / 100) * x * 5, width / 210, height / 35);
+  for (let i = 0; i < 30; i++) {
+    rect(width / 2, (height / 100) * i * 5, width / 210, height / 35);
   }
   stroke(255);
   fill(0);
-  rect(width/2, height/50, width/14, height/8);
+  rect(width / 2, height / 50, width / 10, height / 8);
 }
 
-// Collision detection with the rectangles
+// Collision detection
 function collision() {
   if (
-    x < width / 20 + width / 60 / 2 + radius &&
-    y > rectY - height / 7 / 2 - radius &&
-    y < rectY + height / 7 / 2 + radius
+    ballX < width / 20 + width / 60 / 2 + radius &&
+    ballX > width / 20 - width / 60 / 2 - radius &&
+    ballY > rectY - height / 7 / 2 - radius &&
+    ballY < rectY + height / 7 / 2 + radius
   ) {
     paddleSfx.play();
     speedX = -speedX;
   } else if (
-    x > width - width / 20 - width / 60 / 2 - radius &&
-    y > rectY2 - height / 7 / 2 - radius &&
-    y < rectY2 + height / 7 / 2 + radius
+    ballX < width - width / 20 + width / 60 / 2 + radius &&
+    ballX > width - width / 20 - width / 60 / 2 - radius &&
+    ballY > rectY2 - height / 7 / 2 - radius &&
+    ballY < rectY2 + height / 7 / 2 + radius
   ) {
     paddleSfx.play();
     speedX = -speedX;
