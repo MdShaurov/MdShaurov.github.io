@@ -87,9 +87,9 @@ function main() {
     }
     collision();
     control();
+    centerLine();
     moveBall();
     displayBall();
-    centerLine();
   }
 }
 
@@ -126,7 +126,7 @@ function textOnScreen() {
     // timer on screen
     if (frameCount % 60 === 0 && timer > 0) {
       timer--;
-    } else if (timer <= 0) {
+    } else if (timer <= 50) {
       endScreen = true;
     }
 
@@ -147,7 +147,7 @@ function textOnScreen() {
   }
 
   // Match end screen
-  if (endScreen) {
+  if (!start && endScreen) {
     noStroke();
     fill(255);
     textSize(height / 24);
@@ -201,7 +201,7 @@ function textOnScreen() {
 
 // Start screen UI
 function startScreen() {
-  if (start) {
+  if (start && !endScreen) {
     rectY = height / 2;
     rectY2 = height / 2;
     rectHeight = height / 4.8;
@@ -211,7 +211,7 @@ function startScreen() {
     image(play, width / 2, (height / 8) * 4.5, width / 6, height / 10);
     image(quit, width / 2, (height / 8) * 5.5, width / 6, height / 10);
 
-    //
+    // Music on start screen
     if (startMusic) {
       startScreenSfx.loop();
       startMusic = false;
@@ -321,6 +321,8 @@ function displayRect() {
 
 // Shows the ball
 function displayBall() {
+  fill(255);
+  noStroke();
   circle(ballX, ballY, radius * 2);
 }
 
@@ -348,7 +350,7 @@ function control() {
   }
 }
 
-// Center dashed line
+// Center dashed line & box around timer
 function centerLine() {
   rectMode(CENTER);
   noStroke();
