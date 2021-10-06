@@ -21,12 +21,13 @@ function mousePressed() {
 
 function spawnBubble() {
   let bubble = {
-    x: width/2,
+    x: random(width),
     y: height,
     radius: random(20, 50),
     dx: 0,
     dy: -3,
     theColor: color(random(255), random(255), random(255), random(255)),
+    theTime: random(1000),
   };
   theBubbles.push(bubble);
 }
@@ -36,7 +37,10 @@ function bubbleUp() {
     bubble.y += bubble.dy;
   
     // jitter sidesways
-    bubble.x += random(-5, 5);
+    // bubble.x += random(-5, 5);
+
+    bubble.x = noise(bubble.theTime) * width;
+    bubble.theTime += 0.005;
   }
 }
 
