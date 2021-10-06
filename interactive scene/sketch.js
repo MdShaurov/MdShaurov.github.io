@@ -13,8 +13,8 @@ let rectY;
 let rectY2;
 let rectHeight;
 let radius;
-let speedX = 2.5;
-let speedY = 2.5;
+let speedX;
+let speedY;
 let speedPlus = 1.2;
 let paddleSfx;
 let wallSfx;
@@ -63,7 +63,7 @@ function preload() {
   startScreenSfx = loadSound("assets/sounds/startScreenSfx.mp3");
 }
 
-// Create a canvas the size on the window
+// Create resizable canvas
 function setup() {
   createCanvas(windowWidth, windowHeight);
 }
@@ -72,9 +72,9 @@ function setup() {
 function draw() {
   background(0);
 
+  main();
   displayRect();
   startScreen();
-  main();
   textOnScreen();
 }
 
@@ -123,10 +123,10 @@ function textOnScreen() {
     textAlign(CENTER);
     text(timer, width / 2, height / 16);
 
-    // timer on screen
+    // Timer on screen
     if (frameCount % 60 === 0 && timer > 0) {
       timer--;
-    } else if (timer <= 50) {
+    } else if (timer <= 0) {
       endScreen = true;
     }
 
@@ -146,9 +146,8 @@ function textOnScreen() {
     }
   }
 
-  // Match end screen
-  if (!start && endScreen) {
-    let timeDelay
+  // End of match screen
+  if (endScreen) {
     noStroke();
     fill(255);
     textSize(height / 24);
@@ -157,6 +156,8 @@ function textOnScreen() {
     text("Right   " + scoreR, width - width / 3, height / 2);
 
     image(restart, width / 2, (height / 8) * 5, width / 6, height / 10);
+
+    // Restart button mouse hover
     if (
       mouseX >= width / 2 - width / 6 / 2 &&
       mouseX <= width / 2 + width / 6 / 2 &&
@@ -180,12 +181,13 @@ function textOnScreen() {
       mouseY >= (height / 8) * 5 - height / 10 / 2 &&
       mouseY <= (height / 8) * 5 + height / 10 / 2
     ) {
-      gameSfx.stop();
+      setTimeout(function() {
       start = true;
-      startMusic = true;
       gameMusic = false;
       endScreen = false;
-      timer = 60;
+      gameSfx.stop();
+      }, 100)
+      startMusic = true;
     }
 
     // Finished match results
@@ -218,7 +220,7 @@ function startScreen() {
       startMusic = false;
     }
 
-    // Mouse hovering over button
+    // Play button mouse hover
     if (
       mouseX >= width / 2 - width / 6 / 2 &&
       mouseX <= width / 2 + width / 6 / 2 &&
@@ -233,6 +235,8 @@ function startScreen() {
         (height / 10) * 1.1
       );
     }
+
+    // Quit button mouse hover
     if (
       mouseX >= width / 2 - width / 6 / 2 &&
       mouseX <= width / 2 + width / 6 / 2 &&
@@ -259,9 +263,13 @@ function startScreen() {
       startScreenSfx.stop();
       start = false;
       gameMusic = true;
+      ballX = width/2;
       ballY = radius;
       scoreL = 0;
       scoreR = 0;
+      timer = 60;
+      speedX = height/150;
+      speedY = height/150;
     }
 
     // Quit button interaction
@@ -280,8 +288,10 @@ function startScreen() {
 
 // Determines the movement of the ball
 function moveBall() {
+
+  // Setting initial coordinates and radius
   if (move) {
-    radius = height / 55;
+    radius = height / 70;
     ballX = width / 2;
     ballY = radius * 2;
     move = false;
@@ -317,8 +327,8 @@ function displayRect() {
   if (!endScreen) {
     fill(255);
     rectMode(CENTER);
-    rect(width / 20, rectY, width / 60, height / 7);
-    rect(width - width / 20, rectY2, width / 60, height / 7);
+    rect(width / 20, rectY, width / 100, height / 7);
+    rect(width - width / 20, rectY2, width / 100, height / 7);
   }
 }
 
@@ -333,22 +343,22 @@ function displayBall() {
 function control() {
   if (keyIsDown(87)) {
     if (rectY >= height / 7 / 2) {
-      rectY -= 7;
+      rectY -= height/68;
     }
   }
   if (keyIsDown(83)) {
     if (rectY <= height - height / 7 / 2) {
-      rectY += 7;
+      rectY += height/68;
     }
   }
   if (keyIsDown(UP_ARROW)) {
     if (rectY2 >= height / 7 / 2) {
-      rectY2 -= 7;
+      rectY2 -= height/68;
     }
   }
   if (keyIsDown(DOWN_ARROW)) {
     if (rectY2 <= height - height / 7 / 2) {
-      rectY2 += 7;
+      rectY2 += height/68;
     }
   }
 }
@@ -359,29 +369,31 @@ function centerLine() {
   noStroke();
   fill(255);
   for (let i = 0; i < 30; i++) {
-    rect(width / 2, (height / 100) * i * 5, width / 210, height / 35);
+    rect(width / 2, (height / 100) * i * 5, width / 400, height / 35);
   }
   stroke(255);
   fill(0);
-  rect(width / 2, height / 50, width / 10, height / 8);
+  rect(width / 2, height / 50, width / 6, height / 8);
 }
 
 // Collision detection
 function collision() {
   if (
-    ballX < width / 20 + width / 60 / 2 + radius &&
-    ballX > width / 20 - width / 60 / 2 - radius &&
+    ballX < width / 20 + width / 100 / 2 + radius &&
+    ballX > width / 20 - width / 100 / 2 - radius &&
     ballY > rectY - height / 7 / 2 - radius &&
     ballY < rectY + height / 7 / 2 + radius
   ) {
+    ballX = width / 20 + width / 100 / 2 + radius;
     paddleSfx.play();
     speedX = -speedX;
   } else if (
-    ballX < width - width / 20 + width / 60 / 2 + radius &&
-    ballX > width - width / 20 - width / 60 / 2 - radius &&
+    ballX < width - width / 20 + width / 100 / 2 + radius &&
+    ballX > width - width / 20 - width / 100 / 2 - radius &&
     ballY > rectY2 - height / 7 / 2 - radius &&
     ballY < rectY2 + height / 7 / 2 + radius
   ) {
+    ballX = width - width / 20 - width / 100 / 2 - radius;
     paddleSfx.play();
     speedX = -speedX;
   }
