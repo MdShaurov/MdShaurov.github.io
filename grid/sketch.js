@@ -2,6 +2,11 @@
 
 let gridSize = 30;
 let grid;
+let clickSound;
+
+function preload() {
+  clickSound = loadSound("assets/click.mp3");
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -15,17 +20,27 @@ function draw() {
 }
 
 function mousePressed() {
+  clickSound.play();
+
   let cellWidth = width/gridSize;
   let cellHeight = height/gridSize;
 
   let cellX = Math.floor(mouseX/cellWidth);
   let cellY = Math.floor(mouseY/cellHeight);
-
+  
   if (grid[cellY][cellX] === 1) {
     grid[cellY][cellX] = 0;
+    grid[cellY+1][cellX] = 0;
+    grid[cellY-1][cellX] = 0;
+    grid[cellY][cellX+1] = 0;
+    grid[cellY][cellX-1] = 0;
   }
   else if (grid[cellY][cellX] === 0) {
     grid[cellY][cellX] = 1;
+    grid[cellY+1][cellX] = 1;
+    grid[cellY-1][cellX] = 1;
+    grid[cellY][cellX+1] = 1;
+    grid[cellY][cellX-1] = 1;
   }
 }
 
@@ -40,6 +55,9 @@ function displayGrid() {
       }
       else if (grid[y][x] === 1) {
         fill(0);
+      }
+      else if (keyIsDown("e")) {
+        
       }
       rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
     }
