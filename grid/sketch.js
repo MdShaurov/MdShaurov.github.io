@@ -91,12 +91,7 @@ function createRandom2DArray(rows, cols) {
   for (let y=0; y<rows; y++) {
     grid.push([]);
     for (let x=0; x<cols; x++) {
-      if (random(100) < 50) {
-        grid[y].push(0);
-      } 
-      else {
-        grid[y].push(1);
-      }
+      grid[y].push(0);
     }
   }
   return grid;
