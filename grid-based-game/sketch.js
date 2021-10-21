@@ -10,6 +10,8 @@ let gridSize = 10;
 let grid, cellWidth, cellHeight;
 let playerX = 0;
 let playerY = 0;
+let objectX = 0;
+let objectY = 0;
 
 function setup() {
   createCanvas(windowHeight*0.8, windowHeight*0.8);
