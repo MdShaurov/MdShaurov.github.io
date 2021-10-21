@@ -12,10 +12,12 @@ let playerX = 0;
 let playerY = 0;
 
 function setup() {
-  createCanvas(windowWidth*0.7, windowHeight*0.7);
+  createCanvas(windowHeight*0.8, windowHeight*0.8);
   grid = create2DArray(gridSize, gridSize);
   cellWidth = (width-1)/gridSize;
   cellHeight = (height-1)/gridSize;
+
+  grid[playerY][playerX] = 1;
 }
 
 function draw() {
@@ -45,6 +47,9 @@ function displayGrid() {
       if (grid[y][x] === 0) {
         fill(255);
       }
+      if (grid[y][x] === 1) {
+        fill(0);
+      }
       rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
     }
   }
@@ -52,12 +57,12 @@ function displayGrid() {
 
 function playerMove(newX, newY) {
   if (newX>=0 && newY>=0 && newX<gridSize && newY<gridSize) {
-    grid[playerX][playerY] = 0;
+    grid[playerY][playerX] = 0;
 
     playerX = newX;
     playerY = newY;
 
-    grid[playerX][playerY] = 1;
+    grid[playerY][playerX] = 1;
   }
 }
 
