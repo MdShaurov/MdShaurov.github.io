@@ -14,12 +14,12 @@ let objectX = 0;
 let objectY = 0;
 
 function setup() {
-  createCanvas(windowHeight*0.8, windowHeight*0.8);
+  createCanvas(windowHeight*0.9, windowHeight*0.9);
   grid = create2DArray(gridSize, gridSize);
   cellWidth = (width-1)/gridSize;
   cellHeight = (height-1)/gridSize;
 
-  grid[playerY][playerX] = 1;
+  // grid[playerY][playerX] = 1;
 }
 
 function draw() {
@@ -28,20 +28,33 @@ function draw() {
   displayGrid();
 }
 
-function keyPressed() {
-  if (key === "w") {
-    playerMove(playerX, playerY-1);
+function mousePressed() {
+  let cellX = Math.floor(mouseX/cellWidth);
+  let cellY = Math.floor(mouseY/cellHeight);
+
+  if (grid[cellY][cellX] === 0) {
+    grid[cellY][cellX] = 1;
   }
-  else if (key === "a") {
-    playerMove(playerX-1, playerY);
-  }
-  else if (key === "s") {
-    playerMove(playerX, playerY+1);
-  }
-  else if (key === "d") {
-    playerMove(playerX+1, playerY);
+  else if (grid[cellY][cellX] === 1 ) {
+    grid[cellY][cellX] = 0;
   }
 }
+
+
+// function keyPressed() {
+//   if (key === "w") {
+//     playerMove(playerX, playerY-1);
+//   }
+//   else if (key === "a") {
+//     playerMove(playerX-1, playerY);
+//   }
+//   else if (key === "s") {
+//     playerMove(playerX, playerY+1);
+//   }
+//   else if (key === "d") {
+//     playerMove(playerX+1, playerY);
+//   }
+// }
 
 function displayGrid() {
   for (let y=0; y<gridSize; y++) {
@@ -57,16 +70,16 @@ function displayGrid() {
   }
 }
 
-function playerMove(newX, newY) {
-  if (newX>=0 && newY>=0 && newX<gridSize && newY<gridSize) {
-    grid[playerY][playerX] = 0;
+// function playerMove(newX, newY) {
+//   if (newX>=0 && newY>=0 && newX<gridSize && newY<gridSize) {
+//     grid[playerY][playerX] = 0;
 
-    playerX = newX;
-    playerY = newY;
+//     playerX = newX;
+//     playerY = newY;
 
-    grid[playerY][playerX] = 1;
-  }
-}
+//     grid[playerY][playerX] = 1;
+//   }
+// }
 
 function create2DArray(rows, cols) {
   let grid = [];
