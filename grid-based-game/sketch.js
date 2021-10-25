@@ -12,19 +12,34 @@ let playerX = 0;
 let playerY = 0;
 let objectX = 0;
 let objectY = 0;
+let loadLevel, sky, coin, empty, grass;
+
+function preload() {
+  // Loading level
+  loadLevel = "assets/levels/level1.txt";
+  lines = loadStrings(loadLevel);
+
+  // Background
+  sky = loadImage("assets/textures/sky/sky.png");
+
+  // Coins
+  coin = loadImage("assets/textures/coin/coinShine/coin1.png");
+
+  // Blocks
+  grass = loadImage("assets/textures/blocks/grass.png");
+  empty = loadImage("assets/textures/blocks/empty.png");
+}
 
 function setup() {
-  createCanvas(windowHeight*0.9, windowHeight*0.9);
-  grid = create2DArray(gridSize, gridSize);
-  cellWidth = (width-1)/gridSize;
-  cellHeight = (height-1)/gridSize;
+  createCanvas(windowHeight*1.2, windowHeight*0.9);
+  grid = createRandom2DArray(gridSize, gridSize);
+  cellWidth = width/gridSize;
+  cellHeight = height/gridSize;
 
   // grid[playerY][playerX] = 1;
 }
 
 function draw() {
-  background(220);
-  
   displayGrid();
 }
 
@@ -57,19 +72,23 @@ function mousePressed() {
 // }
 
 function displayGrid() {
+  image(sky, 0, 0, width, height);
+
   for (let y=0; y<gridSize; y++) {
     for (let x=0; x<gridSize; x++) {
       if (grid[y][x] === 0) {
-        fill(255);
+        image(empty, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
       }
       if (grid[y][x] === 1) {
-        fill(0);
+        image(grass, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
       }
-      rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
     }
   }
 }
 
+function readLevel() {
+  if 
+}
 // function playerMove(newX, newY) {
 //   if (newX>=0 && newY>=0 && newX<gridSize && newY<gridSize) {
 //     grid[playerY][playerX] = 0;
@@ -81,12 +100,17 @@ function displayGrid() {
 //   }
 // }
 
-function create2DArray(rows, cols) {
+function createRandom2DArray(rows, cols) {
   let grid = [];
   for (let y=0; y<rows; y++) {
     grid.push([]);
     for (let x=0; x<cols; x++) {
-      grid[y].push(0);
+      if (random(100) > 50) {
+        grid[y].push(0);
+      }
+      else {
+        grid[y].push(1);
+      }
     }
   }
   return grid;
