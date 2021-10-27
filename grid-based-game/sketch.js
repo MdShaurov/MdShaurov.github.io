@@ -8,14 +8,14 @@
 // Global Variables
 let grid;
 let BG;
-let grass, coin, mystery, fly, player1, slime, empty;
+let grass, coin, mystery, fly, player, slime, empty;
 let gridHeight, gridWidth;
 let cellWidth, cellHeight;
 let levelToLoad;
 let lines;
 
 function preload() {
-  // Read level day
+  // Read level data
   levelToLoad = "assets/levels/level1.txt";
   lines = loadStrings(levelToLoad);
 
@@ -27,14 +27,14 @@ function preload() {
   coin = loadImage("assets/textures/coin/coin.png");
   mystery = loadImage("assets/textures/blocks/mystery.png");
   fly = loadImage("assets/textures/mobs/fly.png");
-  player1 = loadImage("assets/textures/player/player1.png");
+  player = loadImage("assets/textures/player/player1.png");
   slime = loadImage("assets/textures/mobs/slime.png");
   empty = loadImage("assets/textures/blocks/empty.png");
 }
 
 function setup() {
   // keep this a 4:3 ratio, or it will stretch in weird ways
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowHeight*1.6, windowHeight*0.9);
 
   gridHeight = lines.length;
   gridWidth = lines[0].length;
@@ -81,9 +81,7 @@ function showTile(location, x, y) {
     image(fly, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
   }
   else if (location === "P") {
-    player[x] = grid[y][x];
-    player[x] = grid[y];
-    image(player1, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+    image(player, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
   }
   else if (location === "S") {
     image(slime, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
