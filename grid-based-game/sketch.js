@@ -15,7 +15,7 @@ let levelToLoad;
 let lines;
 
 function preload() {
-  //load level data
+  // Read level day
   levelToLoad = "assets/levels/level1.txt";
   lines = loadStrings(levelToLoad);
 
@@ -44,7 +44,7 @@ function setup() {
 
   grid = createEmpty2dArray(gridWidth, gridHeight);
 
-  //put values into 2d array of characters
+  // 
   for (let y = 0; y < gridHeight; y++) {
     for (let x = 0; x < gridWidth; x++) {
       let cellType = lines[y][x];
