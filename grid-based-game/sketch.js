@@ -7,8 +7,7 @@
 
 // Global Variables
 let grid;
-let BG;
-let grass, coin, mystery, fly, player, slime, empty;
+let BG, grass, coin, mystery, fly, player, slime, empty;
 let gridHeight, gridWidth;
 let cellWidth, cellHeight;
 let levelToLoad;
@@ -19,10 +18,10 @@ function preload() {
   levelToLoad = "assets/levels/level1.txt";
   lines = loadStrings(levelToLoad);
 
-  //load background
+  // Load background
   BG = loadImage("assets/textures/background/sky.png");
 
-  //load tile images
+  // Load environment images
   grass = loadImage("assets/textures/blocks/grass.png");
   coin = loadImage("assets/textures/coin/coin.png");
   mystery = loadImage("assets/textures/blocks/mystery.png");
@@ -33,7 +32,7 @@ function preload() {
 }
 
 function setup() {
-  // keep this a 4:3 ratio, or it will stretch in weird ways
+  // Canvas stays 16:9 ratio
   createCanvas(windowHeight*1.6, windowHeight*0.9);
 
   gridHeight = lines.length;
