@@ -1,39 +1,32 @@
 // Grid Based Game
 // Md Shaurov
-// November 7; 2021
+// November 5, 2021
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// Uses classes to interact
 
 // Global Variables
-let grid;
-let BG, grass, coin, mystery, fly, player, slime, empty;
+let grid, cellType;
+let playerX, playerY;
+let player, brick, grass, crate, finish;
 let gridHeight, gridWidth;
 let cellWidth, cellHeight;
-let levelToLoad;
-let lines;
+let levelToLoad, lines;
 
 function preload() {
   // Read level data
   levelToLoad = "assets/levels/level1.txt";
   lines = loadStrings(levelToLoad);
 
-  // Load background
-  BG = loadImage("assets/textures/background/sky.png");
-
   // Load environment images
   grass = loadImage("assets/textures/blocks/grass.png");
-  coin = loadImage("assets/textures/coin/coin.png");
-  mystery = loadImage("assets/textures/blocks/mystery.png");
-  fly = loadImage("assets/textures/mobs/fly.png");
   player = loadImage("assets/textures/player/player1.png");
-  slime = loadImage("assets/textures/mobs/slime.png");
-  empty = loadImage("assets/textures/blocks/empty.png");
+  finish = loadImage("assets/textures/blocks/empty.png");
 }
 
 function setup() {
-  // Canvas stays 16:9 ratio
-  createCanvas(windowHeight*1.6, windowHeight*0.9);
+  // Canvas stays a square
+  createCanvas(windowHeight*0.9, windowHeight*0.9);
 
   gridHeight = lines.length;
   gridWidth = lines[0].length;
@@ -43,50 +36,67 @@ function setup() {
 
   grid = createEmpty2dArray(gridWidth, gridHeight);
 
-  // 
   for (let y = 0; y < gridHeight; y++) {
     for (let x = 0; x < gridWidth; x++) {
-      let cellType = lines[y][x];
+      cellType = lines[y][x];
       grid[y][x] = cellType;
+
+      if (grid[y][x] === "P") {
+        playerX = grid[y][x];
+        playerY = grid[y];
+      }
     }
   }
 }
 
 function draw() {
+  background(220);
+
   display();
 }
 
 function display() {
-  image(BG, 0, 0, width, height);
-
-  for (let y = 0; y < gridHeight; y++) {
-    for (let x = 0; x < gridWidth; x++) {
-      showTile(grid[y][x], x, y);
+  for (let y=0; y<gridHeight; y++) {
+    for (let x=0; x<gridWidth; x++) {
+      showImage(grid[y][x], x, y);
     }
   }
 }
 
-function showTile(location, x, y) {
-  if (location === "#") {
-    image(grass, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+function keyPressed() {
+  if (key === "w") {
+    tryToMove(playerX, playerY-1);
+    console.log(grid);
   }
-  else if (location === "C") {
-    image(coin, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+  else if (key === "a") {
+    tryToMove(playerX-1, playerY);
   }
-  else if (location === "B") {
-    image(box, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+  else if (key === "s") {
+    tryToMove(playerX+1, playerY);
   }
-  else if (location === "F") {
-    image(fly, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+  else if (key === "d") {
+    tryToMove(playerX, playerY+1);
   }
-  else if (location === "P") {
-    image(player, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+}
+ 
+function tryToMove(newX, newY) {
+  if (newX >= 0 && newY >= 0 && newX < gridWidth && newY < gridHeight) {
+    if (grid[newY][newY] === ".") { //if new spot is empty
+      //reset current player spot to empty
+      grid[playerX][playerY] = ".";
+    
+      playerX = newX;
+      playerY = newY;
+    
+      //set new player spot to red
+      grid[playerX][playerY] = "P";
+    }
   }
-  else if (location === "S") {
-    image(slime, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
-  }
-  else {
-    image(empty, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+}
+
+function showImage(location, x, y) {
+  if (location === "P") {
+    image(player, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
   }
 }
 
