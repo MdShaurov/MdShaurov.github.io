@@ -29,8 +29,19 @@ function draw() {
 }
 
 function mousePressed() {
-  let theBall = new Ball(mouseX, mouseY, jeff);
-  ballArray.push(theBall);
+  for (let i=ballArray.length-1; i>=0; i--) {
+    if (ballArray[i].isPointInBall(mouseX, mouseY)) {
+      ballArray.splice(i, 1);
+      break;
+    }
+  }
+}
+
+function keyPressed() {
+  if (key === " ") {
+    let theBall = new Ball(mouseX, mouseY, jeff);
+    ballArray.push(theBall);
+  }
 }
 
 class Ball {
@@ -73,5 +84,8 @@ class Ball {
     this.x += this.dx;
     this.y += this.dy;
   }
-}
 
+  isPointInBall(x, y) {
+    return dist(x, y, this.x, this.y) < this.radius;
+  }
+}
