@@ -8,18 +8,17 @@
 // Global Variables
 let grid, gridWidth, gridHeight;
 let cellWidth, cellHeight;
-let autoPlay = false;
-let gun;
+let start, end;
 
 function setup() {
-  createCanvas(windowHeight, windowHeight);
+  createCanvas(windowHeight/2, windowHeight);
 
   gridWidth = 20;
   gridHeight = 9;
 
   grid = createEmpty2DArray(gridWidth, gridHeight);
-  cellWidth = width/gridWidth;
-  cellHeight = height/gridHeight;
+  cellWidth = (width-0.7)/gridHeight;
+  cellHeight = height/gridWidth;
 }
 
 function draw() {
@@ -29,9 +28,10 @@ function draw() {
 }
 
 function display() {
-  for (let y=0; y<gridHeight; y++) {
-    for (let x=0; x<gridWidth; x++) {
+  for (let y=0; y<gridWidth; y++) {
+    for (let x=0; x<gridHeight; x++) {
       if (grid[y][x] === 0) {
+        fill()
         rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
       }
     }
@@ -43,7 +43,12 @@ function createEmpty2DArray(rows, cols) {
   for (let y=0; y<rows; y++) {
     grid.push([]);
     for (let x=0; x<cols; x++) {
-      grid[y].push(0);
+      if (y === 1 && x>=3 && x<=8) {
+        grid[y].push(1);
+      }
+      else {
+        grid[y].push(0);
+      }
     }
   }
   return grid;
