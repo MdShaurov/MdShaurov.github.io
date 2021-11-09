@@ -12,7 +12,7 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  grid = createEmpty2DArray(gridSize, gridSize);
+  grid = createRandom2DArray(gridSize, gridSize);
   cellWidth = width/gridSize;
   cellHeight = height/gridSize;
 }

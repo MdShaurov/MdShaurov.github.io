@@ -42,16 +42,28 @@ function display() {
       }
     }
   }
+  blocks(0);
 }
 
 function update() {
   for (let y=0; y<gridHeight; y++) {
     for (let x=0; x<gridWidth; x++) {
-      if (grid[y][x] === 1 && y !== 7) {
+      if (grid[y][x] === 1 && y !== 8) {
         if (grid[y+1][x] !== 1) {
 
           grid[y][x] = 0;
           grid[y+1][x] = 1;
+        }
+      }
+    }
+  }
+}
+
+function blocks(choice) {
+  if (choice === 0) {
+    grid.shift(
+      [0, 0, 0, 0, 0, 0, 0]
+    )
         }
       }
     }
@@ -63,14 +75,8 @@ function baseGrid(cols, rows) {
   for (let y=0; y<rows; y++) {
     grid.push([]);
     for (let x=0; x<cols; x++) {
-      if (y === 1 && x>=3 && x<=5) {
-        grid[y].push(1);
-      }
-      else {
-        grid[y].push(0);
-      }
+      grid[y].push(0);
     }
   }
-
   return grid;
 }
