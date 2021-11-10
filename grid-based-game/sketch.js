@@ -12,9 +12,9 @@ let cols = 4;
 let rows = 4;
 let spacing = 100;
 let slideSfx;
+let time = false;
 let seconds = 0;
 let minutes = 0;
-let time = false;
 let playSound = true;
 
 function preload() {
@@ -47,15 +47,15 @@ function display() {
     for (let x = 0; x < rows; x++) {
 
       // Display rectangles
-      let cellY = x * spacing + 30;
-      let cellX = y * spacing;
+      let cellY = y * spacing + 30;
+      let cellX = x * spacing;
       fill(173, 216, 230);
       rect(cellX, cellY, spacing, spacing);
 
       // Text coordinates
       let textX = cellX + spacing / 2;
       let textY = cellY + spacing / 2;
-      let num = grid[x][y];
+      let num = grid[y][x];
 
       // Display numbers
       if (num !== 16) {
@@ -95,9 +95,8 @@ function mousePressed() {
   }
 }
 
+// Time system
 function stopwatch() {
-
-  // Checking if board is arranged correctly
   for (let y=0; y<grid.length; y++) {
     for (let x=0; x<grid[y].length; x++) {
       if (grid[y][x] === x + y * cols + 1) {
@@ -109,7 +108,6 @@ function stopwatch() {
     }
   }
 
-  // Working watch
   if (watch) {
     if (frameCount % 60 === 0) {
       if (seconds > 58) {
@@ -132,59 +130,60 @@ function stopwatch() {
 }
 
 function slide(x, y) {
-  let cellX = floor(y / spacing);
-  let cellY = floor(x / spacing);
+  let cellX = floor(x / spacing);
+  let cellY = floor(y / spacing);
   let neighbours;
 
   // Setting neighbours
-  if (cellX === 0) {
+  if (cellY === 0) {
     neighbours = [
-      grid[cellX + 1][cellY],
-      grid[cellX][cellY + 1],
-      grid[cellX][cellY - 1]
+      grid[cellY + 1][cellX],
+      grid[cellY][cellX + 1],
+      grid[cellY][cellX - 1]
     ];
-  } else if (cellX === cols - 1) {
+  } else if (cellY === cols - 1) {
     neighbours = [
-      grid[cellX - 1][cellY],
-      grid[cellX][cellY + 1],
-      grid[cellX][cellY - 1]
+      grid[cellY - 1][cellX],
+      grid[cellY][cellX + 1],
+      grid[cellY][cellX - 1]
     ];
   } else {
     neighbours = [
-      grid[cellX + 1][cellY],
-      grid[cellX - 1][cellY],
-      grid[cellX][cellY + 1],
-      grid[cellX][cellY - 1]
+      grid[cellY + 1][cellX],
+      grid[cellY - 1][cellX],
+      grid[cellY][cellX + 1],
+      grid[cellY][cellX - 1]
     ];
   }
-  
-  // Sliding
+
+  // sliding
   for (let i = 0; i < neighbours.length; i++) {
     if (neighbours[i] === 16) {
-      let num = grid[cellX][cellY];
+      let num = grid[cellY][cellX];
+
       if (playSound) {
         slideSfx.play();
       }
 
-      if (cellX !== cols - 1) {
-        if (neighbours[i] === grid[cellX + 1][cellY]) {
-          grid[cellX][cellY] = 16;
-          grid[cellX + 1][cellY] = num;
+      if (cellY != cols - 1) {
+        if (neighbours[i] == grid[cellY + 1][cellX]) {
+          grid[cellY][cellX] = 16;
+          grid[cellY + 1][cellX] = num;
         }
       }
-      if (cellX !== 0) {
-        if (neighbours[i] === grid[cellX - 1][cellY]) {
-          grid[cellX][cellY] = 16;
-          grid[cellX - 1][cellY] = num;
+      if (cellY !== 0) {
+        if (neighbours[i] == grid[cellY - 1][cellX]) {
+          grid[cellY][cellX] = 16;
+          grid[cellY - 1][cellX] = num;
         }
       }
-      if (neighbours[i] === grid[cellX][cellY + 1]) {
-        grid[cellX][cellY] = 16;
-        grid[cellX][cellY + 1] = num;
+      if (neighbours[i] == grid[cellY][cellX + 1]) {
+        grid[cellY][cellX] = 16;
+        grid[cellY][cellX + 1] = num;
       }
-      if (neighbours[i] === grid[cellX][cellY - 1]) {
-        grid[cellX][cellY] = 16;
-        grid[cellX][cellY - 1] = num;
+      if (neighbours[i] == grid[cellY][cellX - 1]) {
+        grid[cellY][cellX] = 16;
+        grid[cellY][cellX - 1] = num;
       }
     }
   }
