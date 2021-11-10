@@ -19,7 +19,7 @@ let playSound = true;
 
 function preload() {
   // Swap sound effect
-  slideSfx = loadSound("assets/sound/slide.mp3")
+  slideSfx = loadSound("assets/sound/slide.mp3");
 }
 
 function setup() {
@@ -123,7 +123,7 @@ function stopwatch() {
         shuffleGrid();
       }
       else {
-        minutes++
+        minutes++;
       }
     }
   }
