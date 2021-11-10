@@ -3,7 +3,7 @@
 // November 5, 2021
 //
 // Extra for Experts:
-// Item location change in 2D array, stopwatch implementation, button implementation, sound. 
+// Item location change in 2D array, stopwatch, button, sound. 
 
 // Global Variables
 let grid, shuffleButton, watch; 
@@ -158,7 +158,7 @@ function slide(x, y) {
     ];
   }
 
-  // sliding
+  // Sliding
   for (let i = 0; i < neighbours.length; i++) {
     if (neighbours[i] === 16) {
       let num = grid[cellY][cellX];
