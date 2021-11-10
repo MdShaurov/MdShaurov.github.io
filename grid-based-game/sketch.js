@@ -6,11 +6,10 @@
 // Item location change in 2D array, stopwatch, button, sound. 
 
 // Global Variables
-let grid, shuffleButton, watch; 
+let grid, shuffleButton, watch, spacing; 
 let restart = false;
 let cols = 4;
 let rows = 4;
-let spacing = 100;
 let slideSfx;
 let time = false;
 let seconds = 0;
@@ -23,7 +22,7 @@ function preload() {
 }
 
 function setup() {
-
+  spacing = windowHeight/10.8;
   // Canvas with extra height for stopwatch
   createCanvas(cols * spacing, rows * spacing + 30);
 
