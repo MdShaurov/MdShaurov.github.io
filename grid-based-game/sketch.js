@@ -89,16 +89,16 @@ function display() {
 
 // Mouse input
 function mousePressed() {
-  if (mouseX < width && mouseX > 0 && mouseY < height && mouseY > 0) {
-    slide(mouseX, mouseY);
+  if (mouseX < width && mouseX > 0 && mouseY < height && mouseY > 30) {
+    slide(mouseX, mouseY-30);
     time = true;
   }
 }
 
 // Time system
 function stopwatch() {
-  for (let y=0; y<grid.length; y++) {
-    for (let x=0; x<grid[y].length; x++) {
+  for (let y=0; y < grid.length; y++) {
+    for (let x=0; x < grid[y].length; x++) {
       if (grid[y][x] === x + y * cols + 1) {
         watch = false;
       }
@@ -108,30 +108,32 @@ function stopwatch() {
     }
   }
 
+  // Time elapse
+  let switchMinute;
   if (watch) {
     if (frameCount % 60 === 0) {
       if (seconds > 58) {
         seconds = 0;
+        switchMinute = true;
       }
       else {
         seconds++;
       }
     }
 
-    if (frameCount % 3600 === 0) {
-      if (minutes > 58) {
-        shuffleGrid();
-      }
-      else {
-        minutes++;
-      }
+    if (minutes > 29) {
+      shuffleGrid();
+    } 
+    else if (switchMinute){
+      switchMinute = false;
+      minutes++;
     }
   }
 }
 
 function slide(x, y) {
-  let cellX = floor(x / spacing);
-  let cellY = floor(y / spacing);
+  let cellX = Math.floor(x / spacing);
+  let cellY = Math.floor(y / spacing);
   let neighbours;
 
   // Setting neighbours
@@ -194,7 +196,7 @@ function shuffleGrid() {
   playSound = false;
 
   for (let s = 0; s < 10000; s++) {
-    slide(random(cols * spacing), random(rows * spacing));
+    slide(random(width), random(height-30));
   }
 
   playSound = true;
