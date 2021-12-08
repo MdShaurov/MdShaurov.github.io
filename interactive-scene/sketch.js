@@ -186,7 +186,7 @@ function textOnScreen() {
       gameMusic = false;
       endScreen = false;
       gameSfx.stop();
-      }, 100)
+      }, 100);
       startMusic = true;
     }
 

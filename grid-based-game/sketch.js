@@ -142,13 +142,15 @@ function slide(x, y) {
       grid[cellY][cellX + 1],
       grid[cellY][cellX - 1]
     ];
-  } else if (cellY === cols - 1) {
+  }
+  else if (cellY === cols - 1) {
     neighbours = [
       grid[cellY - 1][cellX],
       grid[cellY][cellX + 1],
       grid[cellY][cellX - 1]
     ];
-  } else {
+  } 
+  else {
     neighbours = [
       grid[cellY + 1][cellX],
       grid[cellY - 1][cellX],
@@ -166,23 +168,23 @@ function slide(x, y) {
         slideSfx.play();
       }
 
-      if (cellY != cols - 1) {
-        if (neighbours[i] == grid[cellY + 1][cellX]) {
+      if (cellY !== cols - 1) {
+        if (neighbours[i] === grid[cellY + 1][cellX]) {
           grid[cellY][cellX] = 16;
           grid[cellY + 1][cellX] = num;
         }
       }
       if (cellY !== 0) {
-        if (neighbours[i] == grid[cellY - 1][cellX]) {
+        if (neighbours[i] === grid[cellY - 1][cellX]) {
           grid[cellY][cellX] = 16;
           grid[cellY - 1][cellX] = num;
         }
       }
-      if (neighbours[i] == grid[cellY][cellX + 1]) {
+      if (neighbours[i] === grid[cellY][cellX + 1]) {
         grid[cellY][cellX] = 16;
         grid[cellY][cellX + 1] = num;
       }
-      if (neighbours[i] == grid[cellY][cellX - 1]) {
+      if (neighbours[i] === grid[cellY][cellX - 1]) {
         grid[cellY][cellX] = 16;
         grid[cellY][cellX - 1] = num;
       }
