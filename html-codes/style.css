@@ -1,0 +1,11 @@
+h1 {
+    color:blue;
+    text-align: center;
+}
+
+body {
+    padding-left: 15%;
+    padding-right: 15%;
+
+    background-color: lightgray;
+}
